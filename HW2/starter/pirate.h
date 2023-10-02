@@ -14,10 +14,12 @@ Modified by: [your name here] on [date of modification]
 Changelog: [what you added to this file]
 */
 
+
+
 /**
  * Type of a pirate.
  */
-typedef /* TODO: Complete this type definition */ pirate;
+typedef suspicious_pirate pirate;
 
 /**
  * Allocates enough memory for a pirate, and returns a pointer to the newly-

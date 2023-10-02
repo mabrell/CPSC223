@@ -1,4 +1,4 @@
-CC = gcc
+cCC = gcc
 CFLAGS = -std=c17 -Wall -Werror -pedantic -g
 
 # TO STUDENT: You may add to this file, but there must remain a target named
