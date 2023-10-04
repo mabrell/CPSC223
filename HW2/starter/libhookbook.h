@@ -1,4 +1,4 @@
-co#ifndef __LIBHOOKBOOK_H__
+#ifndef __LIBHOOKBOOK_H__
 #define __LIBHOOKBOOK_H__
 
 /*
