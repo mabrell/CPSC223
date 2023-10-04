@@ -1,4 +1,7 @@
+#include "pirate_list.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 struct pirate_list_instance_t
 {
@@ -12,7 +15,7 @@ pirate_list *list_create()
     pirate_list *new_list = malloc(sizeof(pirate_instance_t));
     *new_list->length = 0; 
     *new_list->capacity = INITIAL_CAPACITY;
-    *new_list->pirate_array = malloc((*new_list->capacity)*(sizeof(pirate*)))
+    *new_list->pirate_array = malloc((*new_list->capacity)*(sizeof(pirate*)));
     return *new_list;
 }
 

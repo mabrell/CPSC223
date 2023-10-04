@@ -1,10 +1,14 @@
+
+#include <stdio.h>
+#include <stdbool.h>
+
 #ifndef INITIAL_CAPACITY
 #define INITIAL_CAPACITY 25
 #endif
 
 int main(int argc, char *argv[])
 {
-    validity_value = validity_check_a(argc)
+    bool validity_value = validity_check_a(argc)
     if (validity_value = true)
     {
         return 1;

@@ -1,4 +1,7 @@
-code//Deal with pirate name not there edgecase
+//Deal with pirate name not there edgecase
+#include <pirate.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 struct suspicious_pirate { //I named it suspicious pirate bc they're hiding
                             //behind an opaque construct!
@@ -19,12 +22,12 @@ struct suspicious_pirate { //I named it suspicious pirate bc they're hiding
  */
 void pirate_print(const pirate *p, FILE *restrict output)
 {
-    char* name = p->name;
-    for (c = 0, c < 128, c++)
-    {
-        fprintf(stdout, "%c \n", *name[c])
-    }
+    char *name = p->name;
     
+    for (int c = 0; c < 128; c++)
+    {
+        fprintf(stdout, "%c \n", *name[c]);
+    }
 }
 
 
@@ -64,25 +67,26 @@ pirate *pirate_create(char* name){
  *  next pirate profile.
  */
 
-pirate *pirate_read(FILE *input); //NOTE THIS IS ONLY FOR NAMES
+pirate *pirate_read(FILE *input) //NOTE THIS IS ONLY FOR NAMES
 {
     char *new_pirate_name = malloc(128 * sizeof(char)) //may fail bc blank space
-    fgets(*new_pirate_name, 128, *input)
+    results = fgets(*new_pirate_name, 128, *input);
 
-    if pirate_existence(*new_pirate_name)
+ 
+    if (results == NULL)
     {
-        return -2
-    }
-    if (*new_pirate_name == EOF)
-    {
-        return -1
+        return NULL;
     }
     if (*new_pirate_name[0] == "\n")
     {
-        return 0
+        return NULL;
     }
-        pirate *new_pirate_pointer = pirate_create(*new_pirate_name) //NOTE: passing p
-        return new_pirate_pointer
+    else
+    {
+        pirate *new_pirate_pointer = pirate_create(*new_pirate_name); //NOTE: passing p
+    }
+    
+    return new_pirate_pointer;
 }
 
 
@@ -143,5 +147,5 @@ void pirate_destroy(pirate *p)
     // free(p->port_name);
     // free(p->treasure_amount);
     // free(p->skills);
-    free(p)
+    free(p);
 }

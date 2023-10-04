@@ -82,36 +82,4 @@ size_t list_length(pirate_list *pirates);
  */
 void list_destroy(pirate_list *pirates);
 
-
-
-/**
- * Check if the actual number of pirates in the array is "too large"; if it is,
- *  increase the capacity of the array by a factor of RESIZE_FACTOR.
- *
- * If the array capacity was changed, print to stderr the string "Expand to ",
- *  followed by the new capacity of the list and a newline. Here is a possible
- *  print statement:
- *
- *     fprintf(stderr, "Expand to %zu\n", new_capacity);
- *
- * If the capacity was not changed, do nothing.
- */
-void list_expand_if_necessary(pirate_list *pirates);
-
-/**
- * Check if the actual number of pirates in the array is "too small"; if it is,
- *  decrease the capacity of the array by a factor of RESIZE_FACTOR.
- *
- * If the array capacity was changed, print to stderr the string "Contract to "
- *  followed by the new capacity of the list. Here is a possible print
- *  statement:
- *
- *     fprintf(stderr, Contract to %zu\n, new_capacity);
- *
- * If the capacity was not changed, do nothing.
- *
- * The capacity of the array must never fall below INITIAL_CAPACITY!
- */
-void list_contract_if_necessary(pirate_list *pirates);
-
 #endif
