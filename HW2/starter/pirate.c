@@ -89,13 +89,6 @@ pirate *pirate_read(FILE *input) //NOTE THIS IS ONLY FOR NAMES
     return new_pirate_pointer;
 }
 
-
-/**
- * Prints a pirate's profile to output in conformance with the output
- *  specification in the README.
- */
-void pirate_print(const pirate *p, FILE *output);
-
 /**
  * Returns the name of the pirate.
  */

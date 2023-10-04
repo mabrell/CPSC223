@@ -1,4 +1,6 @@
 #include "libhookbook.h"
+#include "pirate.h"
+#include "pirate_list.h"
 #include <stdio.h>
 #include <stdbool.h>
 

@@ -9,11 +9,11 @@ Author: [your name here]
 */
 //These functions check whether the input is valid, returning true if valid 
 //and false if invalid
-bool validity_check_a( int argc)
+bool validity_check_a( int argc);
 
-bool validity_check_b(char* file_name)
+bool validity_check_b(char* file_name);
 
-
+pirate_list* read_file_and_store(FILE *file_pointer);
 
 
 #endif

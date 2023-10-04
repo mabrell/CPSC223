@@ -1,4 +1,5 @@
 #include "pirate_list.h"
+#include "pirate.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
