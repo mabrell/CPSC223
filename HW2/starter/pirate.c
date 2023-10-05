@@ -1,5 +1,5 @@
 //Deal with pirate name not there edgecase
-#include <pirate.h>
+#include "pirate.h"
 #include <stdio.h>
 #include <stdbool.h>
 

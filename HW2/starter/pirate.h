@@ -19,7 +19,7 @@ Changelog: [what you added to this file]
 /**
  * Type of a pirate.
  */
-typedef suspicious_pirate pirate;
+typedef struct suspicious_pirate pirate;
 
 /**
  * Allocates enough memory for a pirate, and returns a pointer to the newly-
