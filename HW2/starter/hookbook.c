@@ -1,6 +1,4 @@
 #include "libhookbook.h"
-#include "pirate.h"
-#include "pirate_list.h"
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -24,12 +22,13 @@ int main(int argc, char *argv[])
     
     pirate_list* unsorted_pirate_profiles = read_file_and_store(file_pointer);
 
-    pirate_list* sorted_pirate_profiles = lexo_sort(*unsorted_pirate_profiles);
+	list_sort(unsorted_pirate_profiles);
 
-    display_pirate_profiles(sorted_pirate_profiles);
-
-
-
+	size_t length = sorted_pirate_profiles->length;
+	for (size_t i = 0; i < length; i++)
+	{
+		pirate_print((sorted_pirate_profiles->pirate_array)[i], stdout);
+	}
 
     return 0;
 }

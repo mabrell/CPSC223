@@ -1,10 +1,10 @@
-
-
-#include "pirate_list.h"
-#include "pirate.h"
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "pirate_list.h"
+#include "pirate.h"
+
 
 struct pirate_list_instance_t
 {
@@ -53,6 +53,15 @@ void quicksort(pirate_list *pirates, int low, int high)
     }
 }
 
+bool order_check(pirate *a, pirate *b)
+{
+	if (pirate_compare(a, b) >= 0)
+	{
+		/* code */
+	}
+	
+}
+
 
 
 
@@ -68,20 +77,7 @@ void list_sort(pirate_list *pirates)
 }
 
 
-bool order_check(char* a, char* b)
-{
-    int result = strcomp(*a, *b);
-    if (result >= 0)
-    {
-        return false;
-    }
-    if (result < 0)
-    {
-        return true;
-    }
-    else
-        printf("Something went wrong with your order check");
-}
+
 
 void swap(pirate_list* pirate_list_instance,size_t idxa, size_t idxb)
 {
@@ -109,12 +105,10 @@ void list_expand_if_necessary(pirate_list *pirates)
     if (list_length(pirates) == (pirates->capacity))
     {
         pirates->capacity = 2 * (pirates->capacity);
-        int new_capacity = pirates->capacity;
-        pirates->pirate_array = realloc((*pirates).pirate_array, sizeof(pirates->capacity * sizeof(char*)));
+        size_t new_capacity = pirates->capacity;
+        pirates->pirate_array = realloc(pirates.pirate_array, pirates->capacity * sizeof(pirate));
         fprintf(stderr, "Expand to %zu\n", new_capacity);
     }
-    
-        
 }
 
 
@@ -139,7 +133,7 @@ bool pirate_existence(char* name, pirate_list *pirates)
     size_t pirate_found = false;
     for (int c = 0; c <= list_length; c++) //Is this <= ok?
     {
-        if (compareArray(pirates->pirate_array[c], *p))
+        if (strcmp(pirates->pirate_array[c], *p) == 0)
         {
             pirate_found = true;
         }
@@ -198,7 +192,7 @@ void list_contract_if_necessary(pirate_list *pirates)
     if ((list_length(pirates) < (pirates->capacity / 4)))
     {
         pirates->capacity = (pirates->capacity) / 2;
-        int new_capacity = pirates->capacity;
+        size_t new_capacity = pirates->capacity;
         pirates->pirate_array = realloc((*pirates).pirate_array, pirates->capacity * sizeof(char*));
         fprintf(stderr, "Contract to %zu\n", new_capacity);
     }
@@ -210,7 +204,7 @@ size_t list_index_of(pirate_list *pirates, pirate *p)
     size_t correct_pirate = (list_length + 36);
     for (int c = 0; c <= list_length; c++) //Is this <= ok?
     {
-        if (compareArray(pirates->pirate_array[c]->name, p->name))
+        if (strcmp(pirates->pirate_array[c]->name, p->name) == 0)
         {
             correct_pirate = c;
         }
@@ -249,7 +243,7 @@ void list_destroy(pirate_list *pirates)
 bool compareArray(char *a, char *b)
 {
     bool so_far_so_good = true;
-    for (int c = 0; c <= 127; c++) //Is this <= ok?
+    for (int c = 0; c <= 128; c++) //Is this <= ok?
     {
         if (*a[c] != *b[c])
         {

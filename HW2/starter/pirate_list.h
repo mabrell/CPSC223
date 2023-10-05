@@ -1,3 +1,8 @@
+#include "pirate.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 #ifndef __PIRATE_LIST_H__
 #define __PIRATE_LIST_H__
 
@@ -113,5 +118,12 @@ void list_expand_if_necessary(pirate_list *pirates);
  * The capacity of the array must never fall below INITIAL_CAPACITY!
  */
 void list_contract_if_necessary(pirate_list *pirates);
+
+//Checks to see if the input pirate is alread stored in pirate list
+bool pirate_existence(char* name, pirate_list *pirates);
+
+bool compareArray(char *a, char *b);
+
+bool order_check(char* a, char* b);
 
 #endif

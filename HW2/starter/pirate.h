@@ -1,7 +1,10 @@
 #ifndef __PIRATE_H__
 #define __PIRATE_H__
-
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
+
 
 /*
 Header file for pirate for assignment HookBook assignments in CPSC 223 FA2023.

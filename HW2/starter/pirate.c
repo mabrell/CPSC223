@@ -1,7 +1,11 @@
 //Deal with pirate name not there edgecase
-#include "pirate.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "pirate.h"
+#include <stdlib.h>
+
+
 
 struct suspicious_pirate { //I named it suspicious pirate bc they're hiding
                             //behind an opaque construct!
@@ -23,7 +27,7 @@ struct suspicious_pirate { //I named it suspicious pirate bc they're hiding
 void pirate_print(const pirate *p, FILE *restrict output)
 {
     char* name = p->name;
-    fprintf(stdout, "%s \n", name);
+    fprintf(output, "%s \n", name);
 }
 
 
@@ -107,20 +111,7 @@ void pirate_set_name(pirate *p, const char *name)
  */
 int pirate_compare(pirate *a, pirate *b)
 {
-    size_t index_a = list_index_of(*a);
-    size_t index_b = list_index_of(*b);
-    if (index_a > index_b)
-    {
-        return -1;
-    }
-    if(index_a < index_b)
-    {
-        return 1;
-    }
-    if(index_a == index_b)
-    {
-        return 0;
-    }
+	return strcmp(a->name, b->name)
 }
 
 /**
