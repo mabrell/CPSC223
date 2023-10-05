@@ -10,26 +10,23 @@
 
 int main(int argc, char *argv[])
 {
-    bool validity_value = validity_check_a(argc)
-    if (validity_value = true)
+    if (!validity_check_a(argc))
     {
         return 1;
     }
-    validity_value = validity_check_b(argv[1])
+    if (!validity_check_b(argv[1]))
     {
         return 1;
     }
 
-    char* file_name = malloc(sizeof(argv[2])) //Is this allocation necessary?
-    *file_name = argv[2]
 
-    FILE *file_pointer = fopen(*file_name, "r")
+    FILE *file_pointer = fopen(argv[2], "r");
     
-    pirate_list* unsorted_pirate_profiles = read_file_and_store()
+    pirate_list* unsorted_pirate_profiles = read_file_and_store(file_pointer);
 
-    pirate_list* sorted_pirate_profiles = lexo_sort(*unsorted_pirate_profiles)
+    pirate_list* sorted_pirate_profiles = lexo_sort(*unsorted_pirate_profiles);
 
-    display_pirate_profiles(*sorted_pirate_profiles)
+    display_pirate_profiles(sorted_pirate_profiles);
 
 
 

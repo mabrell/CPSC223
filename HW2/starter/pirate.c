@@ -12,7 +12,7 @@ struct suspicious_pirate { //I named it suspicious pirate bc they're hiding
     //size_t treasure_amount;
     //char* skills;
 
-}
+};
 
 
 
@@ -22,12 +22,8 @@ struct suspicious_pirate { //I named it suspicious pirate bc they're hiding
  */
 void pirate_print(const pirate *p, FILE *restrict output)
 {
-    char *name = p->name;
-    
-    for (int c = 0; c < 128; c++)
-    {
-        fprintf(stdout, "%c \n", *name[c]);
-    }
+    char* name = p->name;
+    fprintf(stdout, "%s \n", name);
 }
 
 
@@ -49,9 +45,8 @@ void pirate_print(const pirate *p, FILE *restrict output)
 // }
 
 
-pirate *pirate_create(char* name){
+pirate *pirate_create(){
     pirate *new_p = malloc(sizeof(pirate));
-    new_p->name = name; //
     return new_p;
 }
 
@@ -69,24 +64,25 @@ pirate *pirate_create(char* name){
 
 pirate *pirate_read(FILE *input) //NOTE THIS IS ONLY FOR NAMES
 {
-    char *new_pirate_name = malloc(128 * sizeof(char)) //may fail bc blank space
-    results = fgets(*new_pirate_name, 128, *input);
+	
+    char *new_pirate_name = malloc(128 * sizeof(char)); //may fail bc blank space
+    results = fgets(*new_pirate_name, 128, input);
 
  
     if (results == NULL)
     {
         return NULL;
     }
-    if (*new_pirate_name[0] == "\n")
+    if (new_pirate_name[0] == "\n")
     {
         return NULL;
     }
     else
     {
-        pirate *new_pirate_pointer = pirate_create(*new_pirate_name); //NOTE: passing p
+        pirate *new_pirate_pointer = pirate_create(); //NOTE: passing p
+		new_pirate_pointer->name = new_pirate_name; //can you copy over the array like this?
+		return new_pirate_pointer;
     }
-    
-    return new_pirate_pointer;
 }
 
 /**
@@ -94,8 +90,7 @@ pirate *pirate_read(FILE *input) //NOTE THIS IS ONLY FOR NAMES
  */
 const char *pirate_name(const pirate *p)
 {
-    char* desired_pirate_name = *p.name;
-    return desired_pirate_name;
+    return p->name;
 }
 
 /**
@@ -103,7 +98,7 @@ const char *pirate_name(const pirate *p)
  */
 void pirate_set_name(pirate *p, const char *name) 
 {
-    p.name = name;
+    p->name = *name; //Does this mess things up bc of double pointers?
 }
 
 /**

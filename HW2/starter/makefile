@@ -10,5 +10,6 @@ HookBook: hookbook.c pirate_list.c pirate.c libhookbook.c
 
 
 clean: HookBook
-	rm $^
+	rm -f *.0
+	rm -f HookBook
 # TODO: You must complete the rule to compile HookBook
