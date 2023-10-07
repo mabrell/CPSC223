@@ -35,7 +35,6 @@ pirate* pirate_create()
 //  *  cursor is either at the end of the input file or at the beginning of the
 //  *  next pirate profile.
 //  */
-
 pirate *pirate_read(FILE *restrict input)
 {
 	pirate* new_pirate_pointer = pirate_create();
@@ -120,6 +119,7 @@ void pirate_destroy(pirate *p){
 	free(p);
 }
 
+//This is simply a getter that returns the sizeof() of a pirate struct
 size_t pirate_size()
 {
 	return sizeof(pirate);

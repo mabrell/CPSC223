@@ -1,4 +1,6 @@
 #include "libhookbook.h"
+#include "pirate.h"
+#include "pirate_list.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -27,4 +29,22 @@ bool validity_check_b(char* file_name)
     }
     else
         return true;
+}
+
+bool big_validity_check (int argc, char* file_name)
+{
+	bool test_a = validity_check_a(argc);
+	if (test_a == false)
+	{
+		return false;
+	}
+	bool test_b = validity_check_b(file_name);
+	if (test_b == false)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }

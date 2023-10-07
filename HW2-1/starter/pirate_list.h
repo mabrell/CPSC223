@@ -1,5 +1,7 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #include "pirate.h"
+
 #ifndef __PIRATE_LIST_H__
 #define __PIRATE_LIST_H__
 
@@ -10,11 +12,12 @@ Author: Alan Weide
 
 TO STUDENT: You may add to this file, but do not change anything that is
     already here!
-Modified by: [your name here] on [date of modification]
-Changelog: [what you added to this file]
+Modified by: Mason Abrell on 10/6
+Changelog: I added several functions, including contract and expand if necessary
+as well as the quicksort function and the swap function I created for it
 */
 
-#include <stdlib.h>
+
 
 
 /**

@@ -49,7 +49,7 @@ void list_sort(pirate_list *pirates)
 //This quicksort sorts pirates' pirate_array lexicographically using recursion
 void quicksort(pirate_list *pirates, int low, int high)
 {
-	if (low == high)
+	if (low == high) //TChecks for a 1 cell array, which doesn't need sorting
 	{
 		return;
 	}
@@ -98,12 +98,7 @@ void quicksort(pirate_list *pirates, int low, int high)
 	}
 	swap(pirates, pivot_target, pivot);
 	
-	// if (low + 2 == high)
-	// {
-	// 	return; //In this case, the subarray is 3 long, so it is perfectly sorted
-	// }
-
-	quicksort(pirates, low, pivot_target-1);
+	quicksort(pirates, low, pivot_target-1); //Recursive quicksort call
 	quicksort(pirates, pivot_target, high);
 	return;
 }
@@ -202,6 +197,8 @@ pirate *list_insert(pirate_list *pirates, pirate *p, size_t idx)
 }
 
 
+//Checks to see whether there is already a file in the given pirate_list with
+//the inputted name. Returns True if yes, and False if no.
 bool pirate_existence(pirate_list *pirates,const char* name)
 {
 	size_t length = list_length(pirates);
@@ -300,3 +297,4 @@ void list_destroy(pirate_list *pirates)
 	free(pirates->pirate_array);
 	free(pirates);
 }
+

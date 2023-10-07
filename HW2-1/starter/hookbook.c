@@ -9,11 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-	if (!validity_check_a(argc))
-    {
-        return 1;
-    }
-    if (!validity_check_b(argv[1]))
+	if (!big_validity_check(argc, argv[1]))
     {
         return 1;
     }
