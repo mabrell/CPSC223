@@ -1,6 +1,5 @@
 #ifndef __PIRATE_H__
 #define __PIRATE_H__
-
 #include <stdio.h>
 
 /*
@@ -17,7 +16,7 @@ Changelog: [what you added to this file]
 /**
  * Type of a pirate.
  */
-typedef /* TODO: Complete this type definition */ pirate;
+typedef struct suspicious_pirate pirate;
 
 /**
  * Allocates enough memory for a pirate, and returns a pointer to the newly-
@@ -65,5 +64,12 @@ int pirate_compare(pirate *a, pirate *b);
  *  of p.
  */
 void pirate_destroy(pirate *p);
+
+
+//returns the sizeof pirate
+size_t get_pirate_size();
+
+//A getter for sizeof(pirate)
+size_t pirate_size();
 
 #endif

@@ -1,3 +1,5 @@
+#include <stdbool.h>
+#include "pirate.h"
 #ifndef __PIRATE_LIST_H__
 #define __PIRATE_LIST_H__
 
@@ -14,7 +16,6 @@ Changelog: [what you added to this file]
 
 #include <stdlib.h>
 
-#include "pirate.h"
 
 /**
  * Type of a list of pirates, as an opaque struct.
@@ -26,6 +27,11 @@ typedef struct pirate_list_instance_t pirate_list;
  */
 pirate_list *list_create();
 
+
+//Sorts pirates' pirate_array lexographically, given a low and a high
+void quicksort(pirate_list *pirates, int low, int high);
+
+
 /**
  * Return the index of the pirate with the same name as p, or a value greater
  *  than or equal to the length of the list if the pirate is not in the list.
@@ -33,6 +39,9 @@ pirate_list *list_create();
  * Ownership of p is not changed.
  */
 size_t list_index_of(pirate_list *pirates, pirate *p);
+
+//Returns True if pirate exists in the pirate_list, false if not
+bool pirate_existence(pirate_list *pirates, const char* name);
 
 /**
  * Only if there is no pirate in the list with the same name as p, insert
@@ -49,14 +58,14 @@ size_t list_index_of(pirate_list *pirates, pirate *p);
  */
 pirate *list_insert(pirate_list *pirates, pirate *p, size_t idx);
 
-/**
- * Remove the pirate from the list with the same name as p, and return a
- *  pointer to it.
- * If there is no pirate in the list with the same name as p, return NULL.
- *
- * The caller of this function becomes the owner of the returned pirate if it
- *  is not NULL.
- */
+// /**
+//  * Remove the pirate from the list with the same name as p, and return a
+//  *  pointer to it.
+//  * If there is no pirate in the list with the same name as p, return NULL.
+//  *
+//  * The caller of this function becomes the owner of the returned pirate if it
+//  *  is not NULL.
+//  */
 pirate *list_remove(pirate_list *pirates, pirate *p);
 
 /**
@@ -67,10 +76,15 @@ pirate *list_remove(pirate_list *pirates, pirate *p);
  */
 pirate *list_access(pirate_list *pirates, size_t idx);
 
+//Getter for pirate_list capacity
+size_t get_capacity_value(pirate_list* pirates);
+
+
 /**
  * Sort the list of pirates in lexicographical order by name.
  */
 void list_sort(pirate_list *pirates);
+
 
 /**
  * Return the number of pirates in the list.
@@ -81,5 +95,14 @@ size_t list_length(pirate_list *pirates);
  * Free all memory associated with the list, including the pirates in the list.
  */
 void list_destroy(pirate_list *pirates);
+
+//Swaps the index of two pirates in a chosen pirate_list
+void swap(pirate_list* pirate_list_instance,size_t idxa, size_t idxb);
+
+//To be used right before you add a pirate, expands list if necessary
+void list_expand_if_necessary(pirate_list *pirates);
+
+//To be used right before you add a pirate, contracts list if necessary
+void list_contract_if_necessary(pirate_list *pirates);
 
 #endif
