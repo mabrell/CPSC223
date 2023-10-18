@@ -509,7 +509,14 @@ void captain_read(pirate_list* pirates, FILE *restrict input)
 			return;
 		}
 		char* captain = malloc(128 * sizeof(char));
+		char* temp_pointer_two = underling;
 		captain = fgets(captain, 128, input);
+			if (captain == NULL)//This should stop it at the end 
+		{
+			free(captain);
+			free(temp_pointer_two);
+			return;
+		}
 		size_t prev_char_count = strcspn(captain, "\n");
 		captain[prev_char_count] = '\0';
 		size_t prev_char_count_two = strcspn(underling, "\n");

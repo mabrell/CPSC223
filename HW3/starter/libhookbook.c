@@ -34,7 +34,7 @@ bool argc3_validity_check(char* argv1, char* argv2)
 	bool argv2_access = validity_check_b(argv2);
 	if (!(argv1_access) || !(argv2_access))
 	{
-		fprintf(stderr, "(file doesn't exist) \n");
+		fprintf(stderr, "(file doesn't exist 3) \n");
 		return false;
 	}
 	
@@ -105,7 +105,7 @@ bool argc4_validity_check(char* argv1, char* argv2, char* argv3)
 	bool argv2_access = validity_check_b(file2);
 	if (!(argv1_access) || !(argv2_access))
 	{
-		fprintf(stderr, " (file doesn't exist) \n");
+		fprintf(stderr, " (file doesn't exist 4) \n");
 		return false;
 	}
 	else
