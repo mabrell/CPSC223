@@ -203,35 +203,44 @@ char* pcc(char* input)
 void pirate_print(const pirate *p, FILE *restrict output) //NEEDS WORK
 {
 	char* name = p->name;
-	fprintf(output, "%s \n", name);
+	fprintf(output, "%s\n", name);
 
 	if ((p->captain_changed))
 	{
 		char* captain_name = p->captain_pointer->name;
-		fprintf(output, "    Captain: %s \n", captain_name);
+		if (p->captain_pointer->vessel_changed)
+		{
+			char* cpt_ves = p->captain_pointer->vessel_name; //get cpt vessel
+			fprintf(output, "    Captain: %s (%s)\n", captain_name, cpt_ves);
+		}
+		else
+		{
+			fprintf(output, "    Captain: %s\n", captain_name);
+		}
+		
 	}
 	if ((p->rank_changed))
 	{
 		char* rank_name = p->rank_name;
-		fprintf(output, "    Rank: %s \n", rank_name);
+		fprintf(output, "    Rank: %s\n", rank_name);
 	}
 
 	if ((p->vessel_changed))
 	{
 		char* vessel_name = p->vessel_name;
-		fprintf(output, "    Vessel: %s \n", vessel_name);
+		fprintf(output, "    Vessel: %s\n", vessel_name);
 	}
 
 	if ((p->port_changed))
 	{
 		char* port_name = p->port_name;
-		fprintf(output, "    Port: %s \n", port_name);
+		fprintf(output, "    Port: %s\n", port_name);
 	}
 
 	if ((p->treasure_changed))
 	{
 		unsigned int treasure_amount = p->treasure_amount;
-		fprintf(output, "    Treasure: %u \n", treasure_amount);
+		fprintf(output, "    Treasure: %u\n", treasure_amount);
 	}
 
 	if ((p->skills) != NULL)
