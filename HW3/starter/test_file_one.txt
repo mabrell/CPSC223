@@ -1,0 +1,20 @@
+a very rich
+treasure: 999
+vessel: big boy boat
+port: Lisbon
+
+b rich
+port: wyoming
+treasure: 78
+rank: commander
+
+d incredibly poor
+treasure: 10
+vessel: el not nino
+vessel: el nino
+port: Houston
+rank: squirrel
+
+c slightly poor
+port: nebraska
+rank: peasant

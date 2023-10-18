@@ -1,0 +1,64 @@
+jimmy buffet
+rank:baroque minister
+treasure:1
+vessel:theeeeeeeeb
+skill:bullshittery
+
+wadompsaefw
+rank:baroque minister
+treasure:1
+vessel:thees
+skill:dgds
+
+bufoonery
+rank:baroque minister
+treasure:1
+vessel:theeeeeeeec
+skill:bullshittery
+
+wadomp
+rank:baroque minister
+vessel:thees
+skill:dgds
+
+wadompyy
+rank:baroque ministersss
+vessel:theed
+skill:dgdscx
+
+chalemet
+rank:baroque minister
+treasure:1
+vessel:theeeeeeeeb
+skill:baroque
+skill:melange
+skill:artist
+skill:baroque
+skill:zebra
+skill:capillaries
+
+jack sparrow
+rank:captain
+vessel:the black pearl
+port:tortuga
+treasure:12
+
+william turner
+port:port royal
+skill:smithing
+skill:smithing
+skill:fencing
+skill:kendo
+skill:fencing
+skill:fencing
+skill:fencing
+skill:abacus
+
+elizabeth swan
+rank:queen
+treasure:1
+vessel:the flying dutchman
+port:port royal
+skill:leadership
+skill:subterfuge
+skill:artist

@@ -1,6 +1,7 @@
 #ifndef __PIRATE_H__
 #define __PIRATE_H__
-
+#include "skills_list.h"
+#include <stdbool.h>
 #include <stdio.h>
 
 /*
@@ -17,7 +18,7 @@ Changelog: [what you added to this file]
 /**
  * Type of a pirate
  */
-typedef /* TODO: complete this typedef */ pirate;
+typedef struct suspicious_pirate pirate;
 
 /**
  * Allocates enough memory for a pirate, and returns a pointer to the newly-
@@ -114,5 +115,33 @@ skills_list *pirate_skills(const pirate *p);
  *  of p.
  */
 void pirate_destroy(pirate *p);
+
+//copies what is after the colon in a string that gets returned
+//stands for "post-colon-copy"
+char* pcc(char* input);
+
+
+//Returns the size of the pirate struct
+size_t get_pirate_size();
+
+
+//getter for treasure_change
+bool get_treasure_change(pirate* jack);
+
+//getter for vessel_change
+bool get_vessel_change(pirate* jack);
+
+/**
+ * Compares two pirates, returning a negative number, zero, or a positive
+ *  number as pirate a "comes before", is equal to, or "comes after" pirate b.
+ */
+int pirate_compare(pirate *a, pirate *b);
+
+//sets captain changed
+void set_captain_changed(pirate* p, bool value);
+
+//gets captain changed
+bool get_captain_changed(pirate* p);
+
 
 #endif

@@ -1,0 +1,8 @@
+b rich
+d incredibly poor
+d incredibly poor
+c slightly poor
+c slighly poor
+b rich
+a very rich
+b rich
