@@ -99,22 +99,22 @@ void quicksort(pirate_list *pirates, int low, int high)
 		return;
 	}
 	
-	bool pointers_are_equal = false;
+	bool ptr_equal = false;
 	size_t pivot = high;
 	size_t left = low;
 	size_t right = high-1;
 	size_t pivot_target;
-	while (pointers_are_equal == false)
+	while (ptr_equal == false)
 	{
 		while (pirates->compare_fn(pirates->pirate_array[left], pirates->pirate_array[pivot]) < 0)
 		{
 			left++;
 		}
-		while ((pirates->compare_fn(pirates->pirate_array[right], pirates->pirate_array[pivot]) >= 0) && (pointers_are_equal == false))
+		while ((pirates->compare_fn(pirates->pirate_array[right], pirates->pirate_array[pivot]) >= 0) && (ptr_equal == false))
 		{
 			if (left >= right)
 			{
-				pointers_are_equal = true;
+				ptr_equal = true;
 				pivot_target = left;
 			}
 			else
@@ -124,10 +124,10 @@ void quicksort(pirate_list *pirates, int low, int high)
 		}
 		if (left >= right)
 		{
-			pointers_are_equal = true;
+			ptr_equal = true;
 			pivot_target = left;
 		}
-		if (pointers_are_equal == false)
+		if (ptr_equal == false)
 		{
 			swap(pirates, left, right);
 		}
@@ -357,22 +357,22 @@ void quicksort_basic(pirate_list *pirates, int low, int high)
 		return;
 	}
 	
-	bool pointers_are_equal = false;
+	bool ptr_equal = false;
 	size_t pivot = high;
 	size_t left = low;
 	size_t right = high-1;
 	size_t pivot_target;
-	while (pointers_are_equal == false)
+	while (ptr_equal == false)
 	{
 		while (pirate_compare(pirates->pirate_array[left], pirates->pirate_array[pivot]) < 0)
 		{
 			left++;
 		}
-		while ((pirate_compare(pirates->pirate_array[right], pirates->pirate_array[pivot]) >= 0) && (pointers_are_equal == false))
+		while ((pirate_compare(pirates->pirate_array[right], pirates->pirate_array[pivot]) >= 0) && (ptr_equal == false))
 		{
 			if (left >= right)
 			{
-				pointers_are_equal = true;
+				ptr_equal = true;
 				pivot_target = left;
 			}
 			else
@@ -382,10 +382,10 @@ void quicksort_basic(pirate_list *pirates, int low, int high)
 		}
 		if (left >= right)
 		{
-			pointers_are_equal = true;
+			ptr_equal = true;
 			pivot_target = left;
 		}
-		if (pointers_are_equal == false)
+		if (ptr_equal == false)
 		{
 			swap(pirates, left, right);
 		}
@@ -426,8 +426,8 @@ size_t no_treasure_to_end(pirate_list* pirates)
 	{
 
 		pirate* current_pirate = pirates->pirate_array[index_count];
-		bool current_pirate_treasure_change = get_treasure_change(current_pirate);
-		if (!current_pirate_treasure_change)
+		bool current_p_treasure_change = get_treasure_change(current_pirate);
+		if (!current_p_treasure_change)
 		{
 			treasureless_count++;
 			pirate* handover_pirate = pirates->pirate_array[index_count];
@@ -468,8 +468,8 @@ size_t no_vessel_to_end(pirate_list* pirates)
 	{
 
 		pirate* current_pirate = pirates->pirate_array[index_count];
-		bool current_pirate_vessel_change = get_vessel_change(current_pirate);
-		if (!current_pirate_vessel_change)
+		bool current_p_vessel_change = get_vessel_change(current_pirate);
+		if (!current_p_vessel_change)
 		{
 			vesselless_count++;
 			pirate* handover_pirate = pirates->pirate_array[index_count];
@@ -493,6 +493,7 @@ size_t no_vessel_to_end(pirate_list* pirates)
 	return last_vesseled_index;
 }
 
+//This function reads in the captains and sets them to their respective pirates
 void captain_read(pirate_list* pirates, FILE *restrict input)
 {
 	bool reached_end = false;

@@ -3,7 +3,33 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+//Does a total validity check
+int total_validity_check(size_t argc,char* argv1, char* argv2, char* argv3)
+{
+	bool valid_argc = argc_validity_check(argc);
+	if (!valid_argc)
+	{
+		return 1;
+	}
+	if (argc == 3)
+	{
+		bool valid = argc3_validity_check(argv1, argv2);
+		if (!valid)
+		{
+			return 1;
+		}
 
+	}
+	if (argc == 4)
+	{
+		bool valid = argc4_validity_check(argv1, argv2, argv3);
+		if (!valid)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
 
 //Checks for the right number of arguements, true if correct, false if not
 bool argc_validity_check(int argc)
@@ -22,6 +48,7 @@ bool argc_validity_check(int argc)
     return true;
 }
 
+//Checks the validity of a 3 argument input
 bool argc3_validity_check(char* argv1, char* argv2)
 {
 	if ((argv1[0] == '-') || (argv2[0] == '-'))
@@ -34,7 +61,7 @@ bool argc3_validity_check(char* argv1, char* argv2)
 	bool argv2_access = validity_check_b(argv2);
 	if (!(argv1_access) || !(argv2_access))
 	{
-		fprintf(stderr, "(file doesn't exist 3) \n");
+		fprintf(stderr, "(file doesn't exist) \n");
 		return false;
 	}
 	
@@ -44,6 +71,7 @@ bool argc3_validity_check(char* argv1, char* argv2)
 	}
 }
 
+//Checks the validity of a 4 argument input
 bool argc4_validity_check(char* argv1, char* argv2, char* argv3)
 {
 	char* file1 = "fakefile1";
@@ -105,7 +133,7 @@ bool argc4_validity_check(char* argv1, char* argv2, char* argv3)
 	bool argv2_access = validity_check_b(file2);
 	if (!(argv1_access) || !(argv2_access))
 	{
-		fprintf(stderr, " (file doesn't exist 4) \n");
+		fprintf(stderr, " (file doesn't exist) \n");
 		return false;
 	}
 	else
@@ -130,7 +158,7 @@ bool validity_check_b(char* file_name)
 
 //This function intakes the arguements for an argc3 input, processes them,
 //and returns a correspondingly created pirate list.
-pirate_list* argc4_prcs_pirate(char* argv1, char* argv2, char* argv3, int (*name_comp)(const void *, const void *), int (*treasure_comp)(const void *, const void *), int (*vessel_comp)(const void *, const void *))
+pirate_list* argc4_p(char* argv1, char* argv2, char* argv3, int (*name_comp)(const void *, const void *), int (*treasure_comp)(const void *, const void *), int (*vessel_comp)(const void *, const void *))
 {
 	char flag = 'n';
 	if (argv1[0] == '-')
@@ -183,7 +211,6 @@ FILE* argc4_prcs_pirate_file(char* argv1, char* argv2, char* argv3)
 	if (argv1[0] == '-')
 	{ //This means that this is a flag
 		file1 = argv2;
-
 	}
 	
 	if (argv2[0] == '-')
@@ -234,7 +261,6 @@ char argc4_prcs_flag(char* argv1, char* argv2, char* argv3)
 	if (argv2[0] == '-')
 	{ //This means that this is a flag
 		flag = argv2[1];
-
 	}
 
 	if (argv3[0] == '-')
@@ -248,4 +274,46 @@ char argc4_prcs_flag(char* argv1, char* argv2, char* argv3)
 	// }
 
 	return flag;
+}
+
+void pirate_read_and_sort(FILE* fptr, FILE* cpt, pirate_list* new_pirate_list)
+{
+	bool EOF_reached = false;
+	while (!EOF_reached)
+	{
+		pirate* new_pirate_pointer = pirate_read(fptr);
+		if (new_pirate_pointer == NULL)
+		{
+			EOF_reached = true;
+		}
+		else
+		{
+			pirate* p = list_insert(new_pirate_list, new_pirate_pointer, 0);
+			if (p != NULL)
+			{
+				pirate_destroy(p);
+			}
+			
+		}
+	}
+	list_sort(new_pirate_list);
+	captain_read(new_pirate_list, cpt);
+}
+
+//prints the entire inputted pirate list
+void print_whole_list(pirate_list* new_pirate_list)
+{
+	size_t length = list_length(new_pirate_list);
+	for (size_t i = 0; i < length; i++)
+	{
+		pirate_print(list_access(new_pirate_list, i), stdout);
+	}
+}
+
+//Closes files and destroys list
+void clean_up(FILE* fptr, FILE* fptr_two, pirate_list* lst)
+{
+	fclose(fptr);
+	fclose(fptr_two);
+	list_destroy(lst);
 }
