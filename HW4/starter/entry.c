@@ -1,5 +1,5 @@
 #include "entry.h"
-
+#include "libblotto.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -20,7 +20,6 @@ entry entry_read(FILE *in, int max_id, int battlefields)
         result.distribution = NULL;
         return result;
     }
-
     result.distribution = malloc(sizeof(int) * battlefields);
     result.id = malloc(sizeof(char) * (max_id + 1));
 

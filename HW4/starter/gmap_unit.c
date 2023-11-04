@@ -6,6 +6,8 @@
 #include "gmap_test_functions.h"
 #include "string_key.h"
 
+
+
 /**
  * Non-exhaustive unit test script for gmap.
  * Author: James Glenn
@@ -18,11 +20,11 @@
  * Test numbers:
  * 1: test_initial_size(0, on);
  * 2: test_uses_hash(SMALL_TEST_SIZE);
- * 3: test_get();
- * 4: test_size(SMALL_TEST_SIZE);
- * 5: test_contains(SMALL_TEST_SIZE);
- * 6: test_put_copies_key();
- * 7: test_put_does_not_copy_value();
+ * 3: test_get(); - pass
+ * 4: test_size(SMALL_TEST_SIZE); - fail
+ * 5: test_contains(SMALL_TEST_SIZE); - pass
+ * 6: test_put_copies_key(); - pass
+ * 7: test_put_does_not_copy_value(); - pass
  * 8: test_put_multiple_times();
  * 9: test_remove();
  * 10: test_remove_not_present();
@@ -994,3 +996,4 @@ destroy_values:
     free(btr_value);
     gmap_destroy(m);
 }
+
