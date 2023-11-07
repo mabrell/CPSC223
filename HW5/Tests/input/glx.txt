@@ -1,0 +1,28 @@
+Long Wharf-Y
+Union Station-N
+State Street-N
+Gateway Community College-N
+Yale Old Campus-Y
+Science Hill-Y
+Albertus Magnus College-Y
+Whitneyville-N
+Hamden-Y
+Quinnipiac-Y
+Sleeping Giant-N
+Wallingford-Y
+Yalesville-Y
+Cheshire-Y
+Meriden-Y
+North Haven-Y
+Montowese-N
+Southern Connecticut State University-N
+Fair Haven Heights-N
+East Haven-N
+Tweed/New Haven Airport-Y
+West Haven-Y
+Yale Bowl-N
+Westville-Y
+East Rock-Y
+Wooster Square-N
+Orange-N
+West Rock Ridge-Y
