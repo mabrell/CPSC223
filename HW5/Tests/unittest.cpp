@@ -266,6 +266,7 @@ int test5_num_failed(bool print)
 	Station s4("station4", false);
 	Station s5("station5", true);
 
+
 	list.insertStation(s1);
 	list.insertStation(s2);
 	list.insertStation(s3);

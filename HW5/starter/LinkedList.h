@@ -7,6 +7,10 @@
  * TO STUDENT: You may ONLY modify this file by adding private members!
  * The only exception is the TODO on line 29, which is part of an optional
  *  additional activity.
+ * 
+ * Author: Mason Abrell
+ * CPSC 223 - Pset 5
+ * Date: 11/16/2023
  */
 
 #include "NodeType.h"
@@ -156,6 +160,9 @@ public:
     void print(ostream &out);
 
 private:
+	NodeType* currPos;
+	NodeType* head;
+	int length;
 };
 
 #endif

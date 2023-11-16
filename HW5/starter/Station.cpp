@@ -5,10 +5,18 @@
  * Implementation of the Station class
  * TO STUDENT: Don't forget to remove // TODO before you submit!
  *
- * Author: [YOUR NAME HERE]
+ * Author: Mason Abrell
+ * CPSC 223 - Pset 5
+ * Date: 11/16/2023
+ * Implementation of Station, with class methods defined
  */
 
 #include "Station.h"
+#include <iostream>
+using namespace std;
+
+
+
 
 // Default Constructor (Implemented for you)
 Station::Station()
@@ -17,20 +25,43 @@ Station::Station()
     this->access = false;
 }
 
+//Paramatrized Constructor
 Station::Station(string name, bool access)
 {
-    // TODO: Implement parameterized constructor
+	this->name = name;
+	this->access = access;
 }
+
+//Other public functions
 
 bool Station::isEqual(Station s)
 {
-    // TODO: Implement this
-
-    // TODO: Remove this line, which is here only so the starter code compiles.
+	int result = this->name.compare(s.getName());
+	bool same_access = false;
+	if (this->access == s.access)
+	{
+		same_access = true;
+	}
+	
+	if ((result == 0) && (same_access == true))
+	{
+		return true;
+	}
+	
     return false;
 }
 
 void Station::print(ostream &outfile)
 {
-    // TODO: Implement this
+	char access_indic;
+	if (this->access == true)
+	{
+		access_indic = 'A';
+	}
+	else
+	{
+		access_indic = 'U';
+	}
+    outfile << this->name << " " << access_indic;
 }
+

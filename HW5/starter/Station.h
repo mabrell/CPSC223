@@ -3,7 +3,9 @@
  * CPSC 223 Pset 5
  *
  * Interface for Station class
- *
+ *Author: Mason Abrell
+ * CPSC 223 - Pset 5
+ * Date: 11/16/2023
  */
 
 #ifndef __STATION_H__
