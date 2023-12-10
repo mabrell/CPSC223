@@ -33,15 +33,24 @@ AVLTree::~AVLTree()
 
 AVLTree &AVLTree::operator=(const AVLTree &source)
 {
-#pragma message "TODO: Students write code here"
+	if(this == &source)
+	{
+		return *this;
+	}
+	
 
-    // Check for self-assignment
+	if (this->root != nullptr)
+	{
+		delete (this->root);
+	}
+	
 
-    // Delete existing tree, if it exists
+	if (!(source.root->is_empty()))
+	{
+		this->root = new BSTNode(*source.root);
+		return *this;
+	}
 
-    // Copy root from source.root, if it exists
-
-    // Don't forget to return *this
     return *this;
 }
 

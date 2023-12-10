@@ -19,7 +19,7 @@ private:
     BSTNode *root;
 
 public:
-    /**
+    /*
      * Default constructor. Creates an empty tree.
      */
     BSTree();

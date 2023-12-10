@@ -1,5 +1,4 @@
 #include "BSTNode.h"
-
 #include <cassert>
 #include <algorithm>
 #include <string>
@@ -125,17 +124,107 @@ BSTNode::BSTNode(int data)
     : data(data), count(1), height(0), color(BLACK),
       left(new BSTNode()), right(new BSTNode()), parent(nullptr) {}
 
+
+//The overload assignment (makes a deep copy)
+// BSTNode &BSTNode::operator=(const BSTNode &rhs)
+// {
+// 	if(this == &rhs)
+// 	{
+// 		return this;
+// 	}
+// 	this->make_empty();
+// 	this->data = other.data;
+// 	this->count = other.count;
+// 	this->height = other.height;
+// 	this->color = other.color;
+// 	this->parent = nullptr;
+// 	BSTNode left_node(*left);
+// 	BSTNode right_node(*right);
+// 	this->left = &left_node;
+// 	this->right = &right_node;
+	
+// }
+
+void BSTNode::make_empty()
+{
+	if ((left != nullptr))
+	{
+		delete(left);
+	}
+	if (right != nullptr)
+	{
+		delete(right);
+	}
+	if(parent != nullptr)
+	{
+		if (this == parent->left)
+		{
+			parent->left = nullptr;
+		}
+		if (this == parent->right) 
+		{
+			parent->right = nullptr;
+		}
+	}
+	
+	this->left = nullptr;
+	this->right = nullptr;
+	this->parent = nullptr;
+	this->count = 0;
+	this->data = NULL;
+}
+
 /*
  * TODO: The BSTNode copy constructor is incomplete. You must complete it. You
  *  may use an initializer list, or you may write a traditional constructor
  *  function, or both.
  */
-BSTNode::BSTNode(const BSTNode &other){
-#pragma message "TODO: Implement this function"
+BSTNode::BSTNode(const BSTNode &other) //THIS IS WRONG CHECK WITH SKYLAR
+{
+
+	this->data = other.data;
+	this->count = other.count;
+	this->height = other.height;
+	this->color = other.color;
+	this->parent = nullptr;
+	if (!other.left->is_empty())
+	{
+		BSTNode* left_node = new BSTNode(*other.left);
+		left_node->parent = this;
+		this->left = left_node;
+	}
+	else
+	{
+		BSTNode* baby_left = new BSTNode();
+		baby_left->parent = this;
+		this->left = baby_left;
+	}
+	if (!other.right->is_empty())
+	{
+		BSTNode* right_node = new BSTNode(*other.right);
+		right_node->parent = this;
+		this->right = right_node;
+	}
+	else
+	{
+		BSTNode* baby_right = new BSTNode();
+		baby_right->parent = this;
+		this->right = baby_right;
+	}
+
 }
 
-BSTNode::~BSTNode(){
-#pragma message "TODO: Implement this function"
+BSTNode::~BSTNode()
+{
+	if ((parent == nullptr) && (left == nullptr) && (right ==nullptr))
+	{
+		return;
+	}
+	else
+	{
+		this->make_empty();
+	}
+	
 }
 
 std::string BSTNode::to_string() const
@@ -145,52 +234,176 @@ std::string BSTNode::to_string() const
 
 const BSTNode *BSTNode::minimum_value() const
 {
-#pragma message "TODO: Implement this function"
-
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+	bool value_found = false;
+	const BSTNode* tempvalue;
+	tempvalue = this;
+	while (value_found == false)
+	{
+		bool shifted_down = false;
+		if (tempvalue->left->is_empty())
+		{
+			value_found = true;
+			return tempvalue;
+		}
+		else
+		{
+			tempvalue = tempvalue->left;
+		}
+	}
     return this;
 }
 
 const BSTNode *BSTNode::maximum_value() const
 {
-#pragma message "TODO: Implement this function"
-
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+	bool value_found = false;
+	const BSTNode* tempvalue;
+	tempvalue = this; //(BSTNode*)
+	while (value_found == false)
+	{
+		bool shifted_down = false;
+		if (tempvalue->right->is_empty())
+		{
+			value_found = true;
+			return tempvalue;
+		}
+		else
+		{
+			tempvalue = tempvalue->right;
+		}
+	}
     return this;
 }
 
 const BSTNode *BSTNode::search(int value) const
 {
-#pragma message "TODO: Implement this function"
+	if (this->data == value)
+	{
+		return this;
+	}
+	bool value_found = false;
+	int total_nodes = this->node_count();
+	const BSTNode* tempvalue;
+	tempvalue = this;
+	while (value_found == false)
+	{		
+		bool shifted_down = false;
+		if (tempvalue->height == -1)
+		{
+			return tempvalue;
+		}
+		if (tempvalue->data == value)
+		{
+			return tempvalue;
+		}
+		if ((tempvalue->data > value) && (shifted_down == false))
+		{
+			if (tempvalue->left->is_empty())
+			{
+				return tempvalue->left;
+			}
+			else
+			{
+				tempvalue = tempvalue->left;
+				shifted_down = true;
+			}
+		}
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+		if ((tempvalue->data < value) && (shifted_down == false))
+		{
+			if (tempvalue->right->is_empty())
+			{
+				return tempvalue->right;
+			}
+			else
+			{
+				tempvalue = tempvalue->right;
+				shifted_down = true;
+			}
+		}
+		total_nodes--; //MAYBE UNNECESSARY
+		if (total_nodes < 0)
+		{
+			return new BSTNode();
+		}
+		
+	}
+	
     return new BSTNode();
 }
 
 BSTNode *BSTNode::insert(int value)
 {
-#pragma message "TODO: Implement this function"
+	int left_height;
+	int right_height;
 
-    // TODO: Update this->height (optional)
-    // TODO: Update this->{left,right}->parent (optional)
+	if (this->is_empty())
+	{
+		this->data = value;
+		this->count++;
+		BSTNode* left_baby = new BSTNode(); //creating baby nodes for root
+		BSTNode* right_baby = new BSTNode();
+		this->right = right_baby;
+		this->left = left_baby;
+		this->height = 0;
+		return this;
+	}
+	
+	if (this->data == value)
+	{
+		this->count++;
+		return this;
+	}
+	BSTNode* novel = new BSTNode(value);
+	if (this->data > value)
+	{
+		if (this->left->is_empty())
+		{
+			delete(this->left);
+			this->set_child(LEFT, novel);
+		}
+		else
+		{
+			delete(novel);
+			this->left = this->left->insert(value);
+		}
+	}
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+	if (this->data < value)
+	{
+		if (this->right->is_empty())
+		{
+			delete(this->right);
+			this->set_child(RIGHT, novel);
+			//return this;
+		}
+		else
+		{
+			delete(novel);
+			this->right = this->right->insert(value);
+		}
+	}
+	//Here we calculate the height of the current node and set it:
+	left_height = this->left->height;
+	right_height = this->right->height;
+	if(left_height >= right_height)
+	{
+		this->height = left_height + 1;
+	}
+	if (left_height < right_height)
+	{
+		this->height = right_height + 1;
+	}
     return this;
 }
 
 BSTNode *BSTNode::avl_insert(int value)
 {
-#pragma message "TODO: Implement this function"
 
     /********************************
      ***** BST Insertion Begins *****
      ********************************/
 
-    // TODO: Students write code here
+    this->insert(value);
 
     /********************************
      ****** BST Insertion Ends ******
@@ -200,18 +413,12 @@ BSTNode *BSTNode::avl_insert(int value)
      **** AVL Maintenance Begins ****
      ********************************/
 
-    // TODO: Students write code here
+    BSTNode* temp = this->avl_balance();
 
     /********************************
      ***** AVL Maintenance Ends *****
      ********************************/
-
-    // TODO: Update this->height (optional)
-    // TODO: Update this->{left,right}->parent (optional)
-
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
-    return this;
+    return temp;
 }
 
 BSTNode *BSTNode::rb_insert(int value)
@@ -248,25 +455,232 @@ BSTNode *BSTNode::rb_insert(int value)
 
 BSTNode *BSTNode::remove(int value)
 {
-    // TODO: Students write code here
+	BSTNode* target = (BSTNode*) this->search(value);	
+	if (target->is_empty())
+	{
+		return target;
+	}
+	
+	//Takes care of the case in which there is multiplicity at a node
+	if (target->count != 1)
+	{
+		target->count = target->count - 1;
+		return this;
+	}
+	int target_direction = 0;
+	if (target->parent != nullptr)
+	{
+		//Here, -1 means left, 1 means right, 0 means no parent
+		if (target->parent->left ==  target)
+		{
+			target_direction = -1;
+		}
+		if (target->parent->right == target)
+		{
+			target_direction = 1;
+		}	
+	}
+	
+	//This denotes the state of the children, with child count being 3 if
+	//the only child is on the left, child_count = 1, if the only child is on
+	//the right, child_count = 2, and if it has two children then
+	//child_count = 3
+	int child_count = 0;
+	if (!target->left->is_empty())
+	{
+		child_count = child_count + 1;
+	}
+	if (!target->right->is_empty())
+	{
+		child_count = child_count + 2;
+	}
 
-    // TODO: Update this->height (optional)
-    // TODO: Update this->{left,right}->parent (optional)
+	//This takes care of cases where the target is a leaf
+	if ((target->right->is_empty()) && (target->left->is_empty()))
+	{
+		delete(target->right);
+		if (target_direction != 0)
+		{
+			if (target_direction == -1)
+			{
+				target->parent->left = target->left;
+			}
+			if (target_direction == 1)
+			{
+				target->parent->right = target->left;
+			}
+		}
+		target->parent = nullptr;
+		target->right = nullptr;
+		target->left = nullptr;
+		delete(target);
+		this->parent = nullptr;
+		return this;
+	}
+	
+	//Takes care of the one left child case
+	if (child_count == 1)
+	{
+		
+		target->left->parent = target->parent;
+		delete(target->right);
+		if (target_direction == -1)
+		{
+			target->parent->left = target->left; ///It might be that the left should be 
+			
+		}
+		if (target_direction == 1)
+		{
+			target->parent->right = target->left; //It might be that the right should be target->parent.right
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+		}
+		if (target_direction == 0)
+		{
+			BSTNode* temp = target->left;
+			target->right = nullptr;
+			target->left = nullptr;
+			target->parent = nullptr;
+			delete(target);
+			return temp;
+		}
+		target->right = nullptr;
+		target->left = nullptr;
+		target->parent = nullptr;
+		delete(target);
+
+		return this;
+	}
+	
+		//Takes care of the one right child case
+	if (child_count == 2)
+	{
+		target->right->parent = target->parent;
+		delete(target->left);
+		if (target_direction == -1)
+		{
+			target->parent->left = target->right;
+		}
+		if (target_direction == 1)
+		{
+			target->parent->right = target->right;
+		}
+		if (target_direction == 0)
+		{
+			BSTNode* temp = target->right;
+			target->right = nullptr;
+			target->left = nullptr;
+			target->parent = nullptr;
+			delete(target);
+			return temp;
+		}
+		target->parent = nullptr;
+		target->right = nullptr;
+		target->left = nullptr;
+		delete(target);
+		this->parent = nullptr;
+		return this;
+	}
+	
+	if (child_count == 3)
+	{
+		BSTNode* successor = (BSTNode*) target->right->minimum_value();
+		//Here we have to snip out the successor and putting it up top
+		//There are two cases for the successor: it has one left child, or it
+		//is a leaf. So, we check for case, then if/else
+		if (target->parent == nullptr)
+		{
+			target->data = successor->data;
+			target->count = successor->count;
+			successor->count = 1;
+			target->right->remove(successor->data);
+			target->parent = nullptr;
+			return target;
+		}
+		
+		bool successor_has_child = false;
+		//Find and record parent side:
+		int successor_parent_side = 0; //-1 means parent's left, 1 means right
+		if (successor == successor->parent->left)
+		{
+			successor_parent_side = -1;
+		}
+		if (successor == successor->parent->right)
+		{
+			successor_parent_side = 1;
+		}
+
+		if (!successor->right->is_empty()) //Checks if the successor has child
+		{
+			successor_has_child = true; 
+		}
+		if (successor_has_child) //If there exists a child
+		{
+			if (successor_parent_side == -1)
+			{
+				delete(successor->left);
+				successor->right->parent = successor->parent;
+				successor->parent->left = successor->right;
+			}
+			if (successor_parent_side == 1)
+			{
+				delete(successor->left);
+				successor->right->parent = successor->parent;
+				successor->parent->right = successor->right;
+			}
+		}
+		
+		if (!successor_has_child)
+		{
+			if (successor_parent_side == -1)
+			{
+				successor->parent->left = successor->right;//MIGHT HAVE TO DELETE THE BABY NODES HERE
+				delete(successor->left);
+			}
+			if (successor_parent_side == 1)
+			{
+				successor->parent->right = successor->right;//MIGHT HAVE TO DELETE THE BABY NODES HERE
+				delete(successor->left);
+			}
+		
+		}
+		successor->parent = target->parent;
+		if (target_direction == -1)
+		{
+			target->parent->left = successor;
+		}
+		
+		if (target_direction == 1)
+		{
+			target->parent->right = successor;
+		}
+		
+		target->left->parent = successor;
+		target->right->parent = successor;
+		successor->left = target->left;
+		successor->right = target->right;
+		target->parent = nullptr;
+		target->left = nullptr;
+		target->right = nullptr;
+		delete(target);
+		if (this->height > successor->height)
+		{
+			return this;
+		}
+		return successor;
+	}
+	
+   
     return this;
 }
 
 BSTNode *BSTNode::avl_remove(int value)
 {
-#pragma message "TODO: Implement this function"
 
     /********************************
      ****** BST Removal Begins ******
      ********************************/
 
-    // TODO: Students write code here
+    this->remove(value);
 
     /********************************
      ******* BST Removal Ends *******
@@ -276,14 +690,12 @@ BSTNode *BSTNode::avl_remove(int value)
      **** AVL Maintenance Begins ****
      ********************************/
 
-    // TODO: Students write code here
+    BSTNode* temp = this->avl_balance();
 
     /********************************
      ***** AVL Maintenance Ends *****
      ********************************/
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
     return this;
 }
 
@@ -298,29 +710,37 @@ BSTNode *BSTNode::rb_remove(int value)
 
 int BSTNode::node_height() const
 {
-#pragma message "TODO: Implement this function"
-
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
-    return -1;
+	return this->height;
 }
 
 unsigned int BSTNode::node_count() const
 {
-#pragma message "TODO: Implement this function"
+	int total_count = 0; //Total count in the tree started at the node
+	if (this->is_empty())
+	{
+		return 0;
+	}
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
-    return 0;
+	int left_count = this->left->node_count();
+	int right_count = this->right->node_count();
+
+	total_count = left_count + right_count + 1;
+    return total_count;
 }
 
 unsigned int BSTNode::count_total() const
 {
-#pragma message "TODO: Implement this function"
+	int total_count = 0; //Total count in the tree started at the node
+	if (this->is_empty())
+	{
+		return 0;
+	}
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
-    return 0;
+	int left_count = this->left->count_total();
+	int right_count = this->right->count_total();
+
+	total_count = left_count + right_count + this->count;
+    return total_count;
 }
 
 const BSTNode *BSTNode::parent_in(BSTNode *root) const
@@ -731,34 +1151,141 @@ BSTNode *BSTNode::dir_rotate(Direction dir)
 
 BSTNode *BSTNode::right_rotate()
 {
-#pragma message "TODO: Implement this function"
+	if (this->left->is_empty())
+	{
+		return this; //I know they assume its not but double check
+	}
 
-    // TODO: (optional) Update heights
-    // TODO: (optional) Update parents
+	this->left->parent = this->parent;
+	if (this->parent != nullptr)
+	{
+		if (this->parent->left == this)
+		{
+			this->parent->left = this->left;
+		}
+		if (this->parent->right == this)
+		{
+			this->parent->right = this->left;
+		}
+	}
+	
+	
+	this->parent = this->left;
+	this->left = this->parent->right;
+	this->parent->right = this;
+	
+	this->left->make_locally_consistent();
+	this->make_locally_consistent();
+	this->parent->make_locally_consistent();
+	
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
-    return this;
+	BSTNode* height_fix_temp = this->parent;
+
+	while (!(height_fix_temp->parent == nullptr))
+	{
+		height_fix_temp = height_fix_temp->parent;
+		height_fix_temp->make_locally_consistent();		
+	}
+	
+	return this->parent;
 }
 
 BSTNode *BSTNode::left_rotate()
 {
-#pragma message "TODO: Implement this function"
+	if (this->right->is_empty())
+	{
+		return this; //I know they assume its not but double check
+	}
+	
+	this->right->parent = this->parent;
 
-    // TODO: (optional) Update heights
-    // TODO: (optional) Update parents
+	if (this->parent != nullptr)
+	{
+		if (this->parent->left == this)
+		{
+			this->parent->left = this->right;
+		}
+		if (this->parent->right == this)
+		{
+			this->parent->right = this->right;
+		}
+	}
+	
+	
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
-    return this;
+
+	this->parent = this->right;
+	this->right = this->parent->left;
+	this->parent->left = this;
+	
+	this->right->make_locally_consistent();
+	this->make_locally_consistent();
+	this->parent->make_locally_consistent();
+	
+
+	BSTNode* height_fix_temp = this->parent;
+
+	while (!(height_fix_temp->parent == nullptr))
+	{
+		height_fix_temp = height_fix_temp->parent;
+		height_fix_temp->make_locally_consistent();		
+	}
+	
+	return this->parent;
 }
 
 BSTNode *BSTNode::avl_balance()
 {
-#pragma message "TODO: Implement this function"
+	if (!is_balanced())
+	{
+		if (left->is_balanced() && right->is_balanced())
+		{
+			if (left->height > right->height)//Denotes LL or LR
+			{
+				if (left->left->height > left->right->height) //Denotes LL
+				{
+					return this->right_rotate();
+				}
+				else if (left->left->height < left->right->height) //Denotes LR
+				{
+					this->left->left_rotate();
+					return this->right_rotate();
+				}	
+				else
+				{
+					return this->right_rotate();
+				}
+			}
+			else //Denotes RR or RL
+			{
+				if (right->right->height > right->left->height) //Denotes RR
+				{
+					return this->left_rotate();
+				}
+				else if (right->right->height < right->left->height)
+				{
+					this->right->right_rotate();
+					return this->left_rotate();
+				}
+				else
+				{
+					return this->left_rotate();
+				}
+				
+			}
+		}
+		
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+	}
+	if (!this->right->is_empty())
+	{
+		this->right = this->right->avl_balance();
+	}
+	if (!this->left->is_empty())
+	{
+		this->left = this->left->avl_balance();
+	}
+	
     return this;
 }
 
@@ -804,5 +1331,41 @@ int BSTNode::height_diff() const
 
 void BSTNode::make_locally_consistent()
 {
-#pragma message "TODO: Implement this function"
+	if (this->is_empty())
+	{
+		this->height = -1;
+		return;
+	}
+	this->right->parent = this;
+	this->left->parent = this;
+	int left_height = this->left->height;
+	int right_height = this->right->height;
+	if(left_height >= right_height)
+	{
+		this->height = left_height + 1;
+	}
+	if (left_height < right_height)
+	{
+		this->height = right_height + 1;
+	}
+	return;	
+}
+
+bool BSTNode::is_balanced()
+{
+
+	if (this->is_empty())//Returns empty nodes as balanced
+	{
+		return true;
+	}
+	
+	int left_height = this->left->height;
+	int right_height = this->right->height;
+
+	if (abs(left_height - right_height) > 1)
+	{
+		return false;
+	}
+
+	return true;
 }

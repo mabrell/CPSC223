@@ -33,15 +33,25 @@ BSTree::~BSTree()
 
 BSTree &BSTree::operator=(const BSTree &source)
 {
-#pragma message "TODO: Students write code here"
 
-    // Check for self-assignment
+	if(this == &source)
+	{
+		return *this;
+	}
+	
 
-    // Delete existing tree, if it exists
+	if (this->root != nullptr)
+	{
+		delete (this->root);
+	}
+	
 
-    // Copy root from source.root, if it exists
+	if (!(source.root->is_empty()))
+	{
+		this->root = new BSTNode(*source.root);
+		return *this;
+	}
 
-    // Don't forget to return *this
     return *this;
 }
 

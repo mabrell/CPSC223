@@ -248,7 +248,7 @@ public:
      * Input: Node this - the node to get the child of
      *        Direction dir - the direction to go
      *        Node child - the node to replace as a child
-     * Returns: N/A
+     * Returns: N/g
      * Does: sets the child of node in the direction matching dir to child, and
      *      sets child's parent to this. Does nothing if dir is ROOT.
      */
@@ -519,4 +519,11 @@ private:
      *      children.
      */
     void make_locally_consistent();
+
+
+	//Clears out all of a node's data, as well as the tree it is a root of
+	void make_empty();
+
+	//checks whether a given node is balanced
+	bool is_balanced();
 };
