@@ -1,3 +1,9 @@
+/*
+ * Filename: BSTNode.h
+ * Contains: Interface of Tree Nodes for CPSC 223
+ * Part of: Homework assignment "Trees" for CPSC 223
+ * Author: (partially) Mason Abrell
+ */
 #pragma once
 
 #include <iostream>
@@ -521,9 +527,18 @@ private:
     void make_locally_consistent();
 
 
-	//Clears out all of a node's data, as well as the tree it is a root of
+	/**
+     * Input: Node this
+     * Returns: The number of nodes in this tree
+     * Does: Counts and returns the number of nodes in this
+     */
 	void make_empty();
 
-	//checks whether a given node is balanced
+	/**
+     * Input: Node this
+     * Returns: A boolean corresponding to whether the tree (that the given 
+	 * node is the root of) is balanced
+     * Does: Checks balance and returns balance
+     */
 	bool is_balanced();
 };

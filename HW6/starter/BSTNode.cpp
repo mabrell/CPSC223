@@ -1,3 +1,10 @@
+/*
+ * Filename: BSTNode.cpp
+ * Contains: Implementation of Nodes for CPSC223
+ * Part of: Homework assignment "Trees" for CPSC 223
+ * Author: Mason Abrell
+ */
+
 #include "BSTNode.h"
 #include <cassert>
 #include <algorithm>
@@ -125,31 +132,11 @@ BSTNode::BSTNode(int data)
       left(new BSTNode()), right(new BSTNode()), parent(nullptr) {}
 
 
-//The overload assignment (makes a deep copy)
-// BSTNode &BSTNode::operator=(const BSTNode &rhs)
-// {
-// 	if(this == &rhs)
-// 	{
-// 		return this;
-// 	}
-// 	this->make_empty();
-// 	this->data = other.data;
-// 	this->count = other.count;
-// 	this->height = other.height;
-// 	this->color = other.color;
-// 	this->parent = nullptr;
-// 	BSTNode left_node(*left);
-// 	BSTNode right_node(*right);
-// 	this->left = &left_node;
-// 	this->right = &right_node;
-	
-// }
-
 void BSTNode::make_empty() //Here we empty out the node's pointers and data
 {
 	if ((left != nullptr))
 	{
-		delete(left);
+		delete(left); //Note: When called in the destructor, these are recursive
 	}
 	if (right != nullptr)
 	{
@@ -180,15 +167,15 @@ void BSTNode::make_empty() //Here we empty out the node's pointers and data
  *  may use an initializer list, or you may write a traditional constructor
  *  function, or both.
  */
-BSTNode::BSTNode(const BSTNode &other) //THIS IS WRONG CHECK WITH SKYLAR
+BSTNode::BSTNode(const BSTNode &other)
 {
 
-	this->data = other.data;
+	this->data = other.data; //Here, each static value is initialized
 	this->count = other.count;
 	this->height = other.height;
 	this->color = other.color;
 	this->parent = nullptr;
-	if (!other.left->is_empty())
+	if (!other.left->is_empty()) //Here, nodes are recursively copied
 	{
 		BSTNode* left_node = new BSTNode(*other.left);
 		left_node->parent = this;
@@ -219,7 +206,7 @@ BSTNode::~BSTNode()
 {
 	if ((parent == nullptr) && (left == nullptr) && (right ==nullptr))
 	{
-		return;
+		return; //Protects already-dead nodes from getting double-freed
 	}
 	else
 	{
@@ -240,7 +227,8 @@ const BSTNode *BSTNode::minimum_value() const
 	tempvalue = this;
 	while (value_found == false)
 	{
-		if (tempvalue->left->is_empty())
+		if (tempvalue->left->is_empty())  
+		//Iterates under assumption of BST invariance
 		{
 			value_found = true;
 			return tempvalue;
@@ -257,7 +245,7 @@ const BSTNode *BSTNode::maximum_value() const
 {
 	bool value_found = false;
 	const BSTNode* tempvalue;
-	tempvalue = this; //(BSTNode*)
+	tempvalue = this;
 	while (value_found == false)
 	{
 		if (tempvalue->right->is_empty())
@@ -319,7 +307,8 @@ const BSTNode *BSTNode::search(int value) const
 				shifted_down = true;
 			}
 		}
-		total_nodes--; //MAYBE UNNECESSARY
+		total_nodes--; 
+		//Notes when full tree has been searched, returns an empty node if so
 		if (total_nodes < 0)
 		{
 			return new BSTNode();
@@ -335,7 +324,7 @@ BSTNode *BSTNode::insert(int value)
 	int left_height;
 	int right_height;
 
-	if (this->is_empty())
+	if (this->is_empty()) //For if this is the first node in the tree
 	{
 		this->data = value;
 		this->count++;
@@ -347,7 +336,7 @@ BSTNode *BSTNode::insert(int value)
 		return this;
 	}
 	
-	if (this->data == value)
+	if (this->data == value) //Adds one to count for duplicate vlues
 	{
 		this->count++;
 		return this;
@@ -373,7 +362,6 @@ BSTNode *BSTNode::insert(int value)
 		{
 			delete(this->right);
 			this->set_child(RIGHT, novel);
-			//return this;
 		}
 		else
 		{
@@ -395,7 +383,7 @@ BSTNode *BSTNode::insert(int value)
     return this;
 }
 
-BSTNode *BSTNode::avl_insert(int value)
+BSTNode *BSTNode::avl_insert(int value) //Quite simple, functionality in balance
 {
 
     /********************************
@@ -553,7 +541,7 @@ BSTNode *BSTNode::remove(int value)
 		target->right = nullptr;
 		BSTNode* height_temp = target->left;
 		target->left = nullptr;
-		while (height_temp->parent != nullptr)
+		while (height_temp->parent != nullptr) //Ensures heights are correct
 		{
 			height_temp->make_locally_consistent();
 			height_temp = height_temp->parent;
@@ -604,7 +592,7 @@ BSTNode *BSTNode::remove(int value)
 		return this;
 	}
 	
-		//Takes care of the one right child case
+	//Takes care of the one right child case
 	if (child_count == 2)
 	{
 		target->right->parent = target->parent;
@@ -650,6 +638,8 @@ BSTNode *BSTNode::remove(int value)
 		return this;
 	}
 	
+
+	//Takes care of the two children case
 	if (child_count == 3)
 	{
 		BSTNode* successor = (BSTNode*) target->right->minimum_value();
@@ -1237,8 +1227,8 @@ BSTNode *BSTNode::right_rotate()
 {
 	if (this->left->is_empty())
 	{
-		return this; //I know they assume its not but double check
-	}
+		return this; //I know they assume its not but double check, trust no one
+	} //-_-
 
 	this->left->parent = this->parent;
 	if (this->parent != nullptr)
@@ -1432,7 +1422,7 @@ int BSTNode::height_diff() const
     /*
      * This is implemented for you. Note the use of the node_height() function
      *  rather than the height property. Why do you think is it written in this
-     *  way?
+     *  way? -So that it re-calculates heights?
      */
     int diff = 0;
     if (!this->is_empty())
