@@ -145,7 +145,7 @@ BSTNode::BSTNode(int data)
 	
 // }
 
-void BSTNode::make_empty()
+void BSTNode::make_empty() //Here we empty out the node's pointers and data
 {
 	if ((left != nullptr))
 	{
@@ -170,8 +170,9 @@ void BSTNode::make_empty()
 	this->left = nullptr;
 	this->right = nullptr;
 	this->parent = nullptr;
+	this->color = BLACK;
 	this->count = 0;
-	this->data = NULL;
+	this->data = 0;
 }
 
 /*
@@ -239,7 +240,6 @@ const BSTNode *BSTNode::minimum_value() const
 	tempvalue = this;
 	while (value_found == false)
 	{
-		bool shifted_down = false;
 		if (tempvalue->left->is_empty())
 		{
 			value_found = true;
@@ -260,7 +260,6 @@ const BSTNode *BSTNode::maximum_value() const
 	tempvalue = this; //(BSTNode*)
 	while (value_found == false)
 	{
-		bool shifted_down = false;
 		if (tempvalue->right->is_empty())
 		{
 			value_found = true;
@@ -423,14 +422,41 @@ BSTNode *BSTNode::avl_insert(int value)
 
 BSTNode *BSTNode::rb_insert(int value)
 {
-#pragma message "TODO: Implement this function"
 
     /********************************
      ***** BST Insertion Begins *****
      ********************************/
+	bool duplicate = false;
+	const BSTNode* target = this->search(value);
+	if (!target->is_empty())
+	{
+		duplicate = true;
+	}
+    this->insert(value);
+	
+	if (duplicate) //returns and skips all correcting stuff if a duplicate
+	{
+		return this;
+	}
 
-    // TODO: Students write code here
+	target = this->search(value);
+	
+	//Here I sneakily get around the const by going to the parent and back down
 
+	if ((target->parent != nullptr))
+	{
+		if (target->parent->left == target)
+		{
+			BSTNode* sneaky_temp = target->parent;
+			sneaky_temp->left->color = RED;
+		}
+		if (target->parent->right == target)
+		{
+			BSTNode* sneaky_temp = target->parent;
+			sneaky_temp->right->color = RED;
+		}
+	}
+	
     /********************************
      ****** BST Insertion Ends ******
      ********************************/
@@ -439,17 +465,28 @@ BSTNode *BSTNode::rb_insert(int value)
      ***** RB Maintenance Begins ****
      ********************************/
 
-    // TODO: Students write code here
+	
+	if (target->parent != nullptr)
+	{
+		if(target->parent->color == RED) //check for red-red violation
+		{
+			if(target->parent->parent != nullptr)
+			{
+				target->parent->parent->rb_eliminate_red_red_violation();
+			}
+		}
+	}
 
     /********************************
      ****** RB Maintenance Ends *****
      ********************************/
-
-    // TODO: Update this->height (optional)
-    // TODO: Update this->{left,right}->parent (optional)
-
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+	
+	BSTNode* height_temp = target->parent;
+	while (height_temp != nullptr)
+		{
+			height_temp->make_locally_consistent();
+			height_temp = height_temp->parent;
+		}
     return this;
 }
 
@@ -504,15 +541,24 @@ BSTNode *BSTNode::remove(int value)
 			if (target_direction == -1)
 			{
 				target->parent->left = target->left;
+				target->left->parent = target->parent;
 			}
 			if (target_direction == 1)
 			{
 				target->parent->right = target->left;
+				target->left->parent = target->parent;
 			}
 		}
 		target->parent = nullptr;
 		target->right = nullptr;
+		BSTNode* height_temp = target->left;
 		target->left = nullptr;
+		while (height_temp->parent != nullptr)
+		{
+			height_temp->make_locally_consistent();
+			height_temp = height_temp->parent;
+		}
+		height_temp->make_locally_consistent();
 		delete(target);
 		this->parent = nullptr;
 		return this;
@@ -538,7 +584,14 @@ BSTNode *BSTNode::remove(int value)
 		{
 			BSTNode* temp = target->left;
 			target->right = nullptr;
+			BSTNode* height_temp = target->left;
 			target->left = nullptr;
+			while (height_temp->parent != nullptr)
+			{
+				height_temp->make_locally_consistent();
+				height_temp = height_temp->parent;
+			}
+			height_temp->make_locally_consistent();
 			target->parent = nullptr;
 			delete(target);
 			return temp;
@@ -556,6 +609,7 @@ BSTNode *BSTNode::remove(int value)
 	{
 		target->right->parent = target->parent;
 		delete(target->left);
+
 		if (target_direction == -1)
 		{
 			target->parent->left = target->right;
@@ -567,15 +621,30 @@ BSTNode *BSTNode::remove(int value)
 		if (target_direction == 0)
 		{
 			BSTNode* temp = target->right;
+			
 			target->right = nullptr;
+			BSTNode* height_temp = target->left;
 			target->left = nullptr;
+			while (height_temp->parent != nullptr)
+			{
+				height_temp->make_locally_consistent();
+				height_temp = height_temp->parent;
+			}
+			height_temp->make_locally_consistent();
 			target->parent = nullptr;
 			delete(target);
 			return temp;
 		}
 		target->parent = nullptr;
 		target->right = nullptr;
+		BSTNode* height_temp = target->left;
 		target->left = nullptr;
+		while (height_temp->parent != nullptr)
+		{
+			height_temp->make_locally_consistent();
+			height_temp = height_temp->parent;
+		}
+		height_temp->make_locally_consistent();
 		delete(target);
 		this->parent = nullptr;
 		return this;
@@ -643,6 +712,16 @@ BSTNode *BSTNode::remove(int value)
 			}
 		
 		}
+
+		BSTNode* height_temp; //Sets up variables for height correction
+		if (successor_has_child)
+		{
+			height_temp = successor->right;
+		}
+		else
+		{
+			height_temp = successor->parent;
+		}
 		successor->parent = target->parent;
 		if (target_direction == -1)
 		{
@@ -661,6 +740,12 @@ BSTNode *BSTNode::remove(int value)
 		target->parent = nullptr;
 		target->left = nullptr;
 		target->right = nullptr;
+		while (height_temp->parent != nullptr)
+		{
+			height_temp->make_locally_consistent();
+			height_temp = height_temp->parent;
+		}
+		height_temp->make_locally_consistent();
 		delete(target);
 		if (this->height > successor->height)
 		{
@@ -696,7 +781,7 @@ BSTNode *BSTNode::avl_remove(int value)
      ***** AVL Maintenance Ends *****
      ********************************/
 
-    return this;
+    return temp;
 }
 
 BSTNode *BSTNode::rb_remove(int value)
@@ -745,10 +830,9 @@ unsigned int BSTNode::count_total() const
 
 const BSTNode *BSTNode::parent_in(BSTNode *root) const
 {
-#pragma message "TODO: Implement this function"
-
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
+	int value = root->data;
+	BSTNode* target = (BSTNode*) this->search(value);
+	return target->parent;	
     return nullptr;
 }
 
@@ -1300,16 +1384,46 @@ BSTNode *BSTNode::rb_eliminate_red_red_violation()
 
     if (nb.shape != SHAPE_NONE)
     {
-        /*
-         * There is a red-red violation somewhere in the neighborhood of this
-         *  Fix it.
-         */
+		if (nb.y->color == RED) //If uncle is red
+		{
+			swap_colors(nb.p, nb.g); //all cases are the same
+			nb.y->color = BLACK;
+			return this;
+		}
+		
+		if (nb.y->color == BLACK) //If uncle is black
+		{
+			if (nb.shape == LL)
+			{
+				swap_colors(nb.p, nb.g);
+				nb.g->right_rotate();	
+			}
 
-#pragma message "TODO: Implement the rest of this function"
+			if (nb.shape == LR)
+			{
+				swap_colors(nb.x, nb.g);
+				nb.p->left_rotate();
+				nb.g->right_rotate();				
+			}
+
+			if (nb.shape == RL)
+			{
+				swap_colors(nb.x, nb.g);
+				nb.p->right_rotate();
+				nb.g->left_rotate();				
+			}
+
+			if (nb.shape == RR)
+			{
+				swap_colors(nb.p, nb.g);
+				nb.g->left_rotate();
+			}
+
+			return nb.y;
+
+		}
     }
 
-    // TODO: This line is in here so that the starter code compiles.
-    // Remove or modify it when implementing.
     return this;
 }
 

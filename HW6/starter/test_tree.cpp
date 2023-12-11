@@ -22,10 +22,11 @@ int main(int argc, char* argv[])
 	// n1.insert(49);
 	// n1.insert(8);
 	// n1.insert(47);
-	//n1.remove(46);
+	// n1.remove(46);
 	// n1.remove(12);
 
 	// n1.insert(36);
+	
 	// print_pretty(n1, 1, 0, cout);
 	// print_pretty(*n1.avl_balance(), 1, 0, cout);
 
